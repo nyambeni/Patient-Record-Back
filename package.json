@@ -1,0 +1,34 @@
+{
+  "name": "patient-record-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "APP.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "dotenv": "^8.2.0",
+    "express": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "jsonwebtoken": "*",
+    "mysql": "*",
+    "nodemon": "^2.0.6",
+    "passport": "*",
+    "passport-jwt": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyambeni/Patient-Record-Back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nyambeni/Patient-Record-Back/issues"
+  },
+  "homepage": "https://github.com/nyambeni/Patient-Record-Back#readme"
+}
