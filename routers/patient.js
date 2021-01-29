@@ -3,16 +3,22 @@ const router = express.Router();
 const connection = require('../Config/conn')
 
 
-router.get('/home/:id', function(req, res, next) {
+router.get('/home/:id', function (req, res, next) {
 
-    connection.query('select * from patient where patientId =?', req.params.id, function(error, results, fields) {
+    connection.query('select * from patient where patientId =?', req.params.id, function (error, results, fields) {
         if (results.length > 0) {
             console.log('here');
+        
 
             //req.session.loggedin = true;
             //req.session.adminId = params.adminId;
             console.log('Successfully');
-            console.log(results)
+            //console.log(results)
+            console.log(results[0].patientId);
+            console.log(results[0].patientName);
+            console.log('field');
+            console.log(fields)
+
             res.send(results);
 
         } else {
@@ -21,55 +27,96 @@ router.get('/home/:id', function(req, res, next) {
         }
         res.end();
     });
-    
+
 });
 
-router.post('/appointment', function(req, res, next) {
-    console.log('start')
+router.post('/appointment', function (req, res, next) {
+    
     const params = req.body;
 
-    //if(params.appDate){
-    console.log('after')
+    if (params.appDate != '') {
+        
+        ////// Date
+        const date_ob = new Date();
 
-        connection.query('select COUNT(*),appDate from appointment GROUP by appDate HAVING COUNT(appDate) < 5 and appDate = ?',params.appDate, function(error, results, fields) {
-            if (results.length > 0) {
-                console.log('here');
+        const date = ("0" + date_ob.getDate()).slice(-2); /// day
+        const month = ("0" + (date_ob.getMonth() + 1)).slice(-2); /// month
+        const year = date_ob.getFullYear(); /// year
+        const fullDate = year + "-" + month + "-" + date;
 
-                if(!error){
-                    connection.query('insert into appointment set ?', params, (err, rows) => {
-                    if (!err) {
-                    //req.session.loggedin = true;
-                    //req.session.adminId = params.adminId;
-                    console.log('Successfully');
-                    console.log(results)
-                    res.send(rows);
+        if (params.appDate > fullDate) {
+            
+            connection.query('select * from appointment where appDate = ?', params.appDate, function (error, results) {
+                if (results.length < 10) {
 
-                    }
-                    else {
-                        console.log(err);
-                    }
-
-                })}
-                else{
-                    console.log('you can set appointment starting from tomorrow');
-                    res.send('you can set appointment starting from tomorrow');
-
-                }
-            } else {
-                res.send('Day Is fully booked, choose another date');
-                console.log('Day Is fully booked, choose another date');
-            }
-            res.end();
-        });
-   /* }
-    else{
-    console.log('select date')
-    res.send('select date')
-    }*/
+                    connection.query('SELECT count(*) FROM appointment GROUP by appDate, patientId having COUNT(appDate) = 1 and patientId =? and appDate = ?',[params.patientId, params.appDate], function (error, results) {
+                        if (results.length == 1 ) {
+                            console.log('you have already set an appointment on this day');
+                            //res.json('you have already set an appointment on this day');
+                        }
+                        else {
+                            params.isattend = false;
+                            params.isDeleted = false;
     
+                            connection.query('insert into appointment set ?', params, (err, rows) => {
+                                if (!err) {
+                                    //req.session.loggedin = true;
+                                    //req.session.adminId = params.adminId;
+                                    console.log('Successfully');
+                                    console.log(params)
+                                    //res.send(params);
+    
+                                }
+                                else {
+                                    console.log(err);
+                                }
+    
+                            })
+    
+                        }
+                    })
+
+                } else {
+                    res.send('Day Is fully booked, choose another date');
+                    console.log('Day Is fully booked, choose another date');
+                }
+                res.end();
+            });
+        }
+        else {
+            console.log('cannot set a past date or current date', params.appDate, ' > ', fullDate);
+            res.send('cannot set a past date or current date', params.appDate, ' > ', fullDate)
+        }
+    }
+    else {
+        console.log('select date')
+        res.send('select date')
+    }
 });
 
-/*select COUNT(appdate),appdate,p.patientId from appointment a, patient p where p.patientId = a.patientId group by appDate, p.patientId HAVING COUNT(appdate) > 0 and p.patientId =?*/
+
+router.get('/getPatientAppointment/:id', function(req, res, next){
+    connection.query('select * from appointment where patientId =?', req.params.id, function(error, results){
+        if(error){
+            res.send(error)
+            console.log(error);
+        }
+        else{
+            if(results.length > 0){
+                console.log('Succesfully loaded appointment');
+                console.log(results);
+                res.send(results);
+            }
+
+            else{
+                console.log('You do not have appointment(s)');
+                res.send('You do not have appointment(s)');
+
+            }
+        }
+    })
+});
+
 
 
 module.exports = router

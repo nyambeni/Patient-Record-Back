@@ -7,7 +7,9 @@ const connection = require('./Config/conn');
 
 const login = require('./routers/login');
 const admin = require('./routers/admin');
-const patient = require('./routers/patient')
+const patient = require('./routers/patient');
+const doctor = require('./routers/doctor');
+
 
 const app = express();
 
@@ -19,8 +21,8 @@ app.use(cors());
 
 app.use('/login', login);
 app.use('/admin', admin);
-app.use('/patient',patient)
-
+app.use('/patient',patient);
+app.use('/doctor',doctor);
 
 app.use('/', (req, res) => {
     res.send('Invalid Endpoint');
