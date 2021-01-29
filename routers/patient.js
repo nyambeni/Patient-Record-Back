@@ -16,8 +16,6 @@ router.get('/home/:id', function (req, res, next) {
             //console.log(results)
             console.log(results[0].patientId);
             console.log(results[0].patientName);
-            console.log('field');
-            console.log(fields)
 
             res.send(results);
 
@@ -52,7 +50,6 @@ router.post('/appointment', function (req, res, next) {
                     connection.query('SELECT count(*) FROM appointment GROUP by appDate, patientId having COUNT(appDate) = 1 and patientId =? and appDate = ?',[params.patientId, params.appDate], function (error, results) {
                         if (results.length == 1 ) {
                             console.log('you have already set an appointment on this day');
-                            //res.json('you have already set an appointment on this day');
                         }
                         else {
                             params.isattend = false;
@@ -64,7 +61,6 @@ router.post('/appointment', function (req, res, next) {
                                     //req.session.adminId = params.adminId;
                                     console.log('Successfully');
                                     console.log(params)
-                                    //res.send(params);
     
                                 }
                                 else {
@@ -77,20 +73,21 @@ router.post('/appointment', function (req, res, next) {
                     })
 
                 } else {
-                    res.send('Day Is fully booked, choose another date');
                     console.log('Day Is fully booked, choose another date');
+                    return res.send({error: true, message:'Day Is fully booked, choose another date'});
+
                 }
                 res.end();
             });
         }
         else {
-            console.log('cannot set a past date or current date', params.appDate, ' > ', fullDate);
-            res.send('cannot set a past date or current date', params.appDate, ' > ', fullDate)
+            console.log('cannot set a past date or current date', params.appDate, ' cannot be less than  ', fullDate);
+            return res.send({error: true, message:'cannot set a past date or current date'})
         }
     }
     else {
         console.log('select date')
-        res.send('select date')
+        return res.send({error: true, message:'select date'})
     }
 });
 

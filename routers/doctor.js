@@ -32,6 +32,9 @@ router.post('/patientrecord', function(req,res,next){
         res.send('please fill the form');
 
     }
+    else{
+        connection.query('insert into medicalrecord ')
+    }
 })
 
 
