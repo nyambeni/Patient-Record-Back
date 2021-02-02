@@ -121,7 +121,8 @@ CREATE TABLE `patient` (
   `Pateint_Surname` varchar(50) NOT NULL,
   `Patient_Address` text NOT NULL,
   `Contact_Number` varchar(10) NOT NULL,
-  `Email` varchar(150) NOT NULL
+  `Email` varchar(150) NOT NULL,
+  'PatientPasswrd' varchar(100) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
