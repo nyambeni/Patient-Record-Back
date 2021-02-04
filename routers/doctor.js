@@ -21,21 +21,21 @@ router.get('/home/:id', function(req, res, next) {
         }
         res.end();
     });
-    
+
 });
 
-router.post('/patientrecord', function(req,res,next){
+router.post('/patientrecord', function(req, res, next) {
     const params = req.body;
 
-    if(params == undefined){
+    if (params == undefined) {
         console.log('please fill the form');
         res.send('please fill the form');
 
-    }
-    else{
+    } else {
         connection.query('insert into medicalrecord ')
     }
-})
+});
+
 
 
 module.exports = router

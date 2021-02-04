@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `AdminID` varchar(30) NOT NULL,
+  `Admin_ID` varchar(30) NOT NULL,
   `Admin_Name` varchar(30) NOT NULL,
   `Admin_Surname` varchar(30) NOT NULL,
   `Admin_Contact_No` varchar(10) NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `patient` (
   `Patient_Address` text NOT NULL,
   `Contact_Number` varchar(10) NOT NULL,
   `Email` varchar(150) NOT NULL,
-  'PatientPasswrd' varchar(100) NOT NULL 
+  'PatientPassword' varchar(100) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -156,7 +156,7 @@ CREATE TABLE `pre_existing_condition` (
 
 CREATE TABLE `test` (
   `Test_ID` int(11) NOT NULL,
-  `Test_Name` int(150) NOT NULL,
+  `Test_Name` varchar(150) NOT NULL,
   `Test_Type` varchar(30) NOT NULL,
   `Description` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
