@@ -1,0 +1,22 @@
+============================================   ADMIN  =======================================================
+
+http://10.100.14.15:4041/login/logadmin
+Admin Login
+
+http://10.100.14.15:1000/admin/viewAllAppointment
+API For All Appointmets
+
+http://10.100.14.15:4041/admin/updateAppointment/
+API For Updating Appointment
+
+
+
+============================================   PATIENT  =======================================================
+
+http://10.100.14.15:4041/login/logpatient
+Patient Login
+
+http://10.100.14.15:4041/patient/appointment
+Set Appointment
+
+

@@ -20,17 +20,15 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
 //   Admin Login 
-router.post('/logadmin', function (req, res) {
+router.post('/logadmin', function (req, res, next) {
     //const mysession = req.session;
-    console.log('home admin');
+    
     const params = req.body;
     if (params.adminId && params.adminPasswrd) {
-        console.log('entered');
 
 
         connection.query('select * from admin where adminId =? and adminPasswrd =?', [params.adminId, params.adminPasswrd], function (error, results, fields) {
             if (results.length > 0) {
-                console.log('here');
 
                 //req.session.loggedin = true;
                 //req.session.adminId = params.adminId;
@@ -50,4 +48,34 @@ router.post('/logadmin', function (req, res) {
     }
 
 });
+
+
+//   Patient Login 
+router.post('/logpatient', function (req, res, next) {
+    //const mysession = req.session;
+    const params = req.body;
+    if (params.patientId && params.patientPasswrd) {
+
+        connection.query('select * from patient where patientId =? and patientPasswrd =?', [params.patientId, params.patientPasswrd], function (error, results, fields) {
+            if (results.length > 0) {
+
+                //req.session.loggedin = true;
+                //req.session.adminId = params.adminId;
+                console.log('Successfully');
+                console.log(results)
+                res.send(results);
+
+            } else {
+                res.send('Can\'t find Patient, Please enter correct Patient Id or Password');
+                console.log('Can\'t find Patient, Please enter correct Patient Id or Password');
+            }
+            res.end();
+        });
+    } else {
+        res.send('Please enter Patient ID and Password!');
+        res.end();
+    }
+
+});
+
 module.exports = router

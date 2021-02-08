@@ -41,7 +41,7 @@ router.post('/appointment', function (req, res, next) {
         const month = ("0" + (date_ob.getMonth() + 1)).slice(-2); /// month
         const year = date_ob.getFullYear(); /// year
         const fullDate = year + "-" + month + "-" + date;
-
+        console.log(params);
         if (params.appDate > fullDate) {
             
             connection.query('select * from appointment where appDate = ?', params.appDate, function (error, results) {
