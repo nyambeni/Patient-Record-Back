@@ -6,6 +6,7 @@ const bodyparser = require('body-parser');
 
 
 const app = express();
+
 app.use(session({
     secret: 'secret',
     resave: true,
@@ -24,11 +25,14 @@ router.post('/logadmin', function (req, res, next) {
     //const mysession = req.session;
     
     const params = req.body;
-    if (params.adminId && params.adminPasswrd) {
+    if (params.adminId != '' && params.adminPasswrd  != '') {
 
 
-        connection.query('select * from admin where adminId =? and adminPasswrd =?', [params.adminId, params.adminPasswrd], function (error, results, fields) {
-            if (results.length > 0) {
+        connection.query(`select * 
+                            from admin 
+                            where adminId = ? 
+                            and adminPasswrd = ?`, [params.adminId, params.adminPasswrd], function (error, results) {
+            if (results.length == 1) {
 
                 //req.session.loggedin = true;
                 //req.session.adminId = params.adminId;
@@ -39,11 +43,12 @@ router.post('/logadmin', function (req, res, next) {
             } else {
                 res.send('Can\'t find Admin, Please enter correct Admin Id or Password');
                 console.log('Can\'t find Admin, Please enter correct Admin Id or Password');
+                console.log(params)
             }
             res.end();
         });
     } else {
-        res.send('Please enter Admin ID and Password!');
+        res.send('Please enter both Admin ID and Password!');
         res.end();
     }
 
@@ -54,7 +59,7 @@ router.post('/logadmin', function (req, res, next) {
 router.post('/logpatient', function (req, res, next) {
     //const mysession = req.session;
     const params = req.body;
-    if (params.patientId && params.patientPasswrd) {
+    if (params.patientId != '' && params.patientPasswrd != '') {
 
         connection.query('select * from patient where patientId =? and patientPasswrd =?', [params.patientId, params.patientPasswrd], function (error, results, fields) {
             if (results.length > 0) {

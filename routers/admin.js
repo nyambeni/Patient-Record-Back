@@ -4,7 +4,11 @@ const connection = require('../Config/conn')
 
 router.get('/viewAllAppointment', function (req, res, next) {
 
-    connection.query('SELECT p.patientId, patientSurname, appDate, patientName from patient p, appointment a where p.patientId = a.patientId and isDeleted = false and isAttend = false', function (error, results) {
+    connection.query(`SELECT p.patientId, patientSurname, date_format(appDate, '%e %M %Y') as appDate, patientName 
+                    from patient p, appointment a 
+                    where p.patientId = a.patientId 
+                    and isDeleted = false 
+                    and isAttend = false`, function (error, results) {
         if (results.length > 0) {
             console.log(results);
             res.send(results);

@@ -5,7 +5,9 @@ const connection = require('../Config/conn')
 
 router.get('/home/:id', function (req, res, next) {
 
-    connection.query('select * from patient where patientId =?', req.params.id, function (error, results, fields) {
+    connection.query(`select date_format(appDate, '%e %M %Y') as appDate
+                    from appointment
+                    where patientId =?`, req.params.id, function (error, results, fields) {
         if (results.length > 0) {
             console.log('here');
         
